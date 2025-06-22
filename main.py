@@ -30,6 +30,11 @@ app.add_middleware(
 checkins = []
 
 
+
+@app.get("/calendar/status")
+async def calendar_status():
+    return {"connected": os.path.exists(CRED_STORE)}
+
 @app.post("/checkins/trigger")
 async def trigger_checkin():
     morning_checkin_job()
@@ -37,6 +42,9 @@ async def trigger_checkin():
 
 def morning_checkin_job():
     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    if not os.path.exists(CRED_STORE):
+        print("Skipping calendar fetch—no credentials.")
+        return
   
     creds = None
     if os.path.exists(CRED_STORE):
