@@ -7,6 +7,7 @@ from google_auth_oauthlib.flow import Flow
 from google.auth.transport.requests import Request as GoogleRequest
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="Wellness Concierge API")
 
@@ -14,6 +15,16 @@ app = FastAPI(title="Wellness Concierge API")
 SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"]
 CLIENT_SECRETS_FILE = "client_secret.json"
 CRED_STORE = "token.json"  
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://startha.vercel.app"  
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 checkins = []
