@@ -30,6 +30,11 @@ app.add_middleware(
 checkins = []
 
 
+@app.post("/checkins/trigger")
+async def trigger_checkin():
+    morning_checkin_job()
+    return {"status": "triggered"}
+
 def morning_checkin_job():
     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
   
